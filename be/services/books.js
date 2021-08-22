@@ -17,6 +17,22 @@ async function getBooks() {
   }
 }
 
+async function getBook(bookId) {
+  const rows = await db.query(
+    `SELECT books.bookName, books.isbn, authors.firstName, authors.lastName
+    FROM books
+    INNER JOIN authors ON books.author = authors.author_id
+    WHERE book_id = ?`,
+    [bookId]
+  );
+  const data = helper.emptyOrRows(rows);
+
+  return {
+    data
+  }
+}
+
 module.exports = {
-  getBooks
+  getBooks,
+  getBook
 }
