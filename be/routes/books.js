@@ -17,9 +17,20 @@ router.get('/:bookId', async function (req, res, next) {
   try {
     res.json(await books.getBook(req.params.bookId));
   } catch (err) {
-    console.error(`Error while loading books `, err.message);
+    console.error(`Error while loading book `, err.message);
     next(err);
   }
 })
+
+// Add book
+router.post('/', async function (req, res, next) {
+  try {
+    res.json(await books.addBook(req.body.bookName, req.body.isbn, req.body.author));
+  } catch (err) {
+    console.error(`Error while adding book `, err.message);
+    next(err);
+  }
+})
+
 
 module.exports = router;
