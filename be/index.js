@@ -2,8 +2,9 @@ require('dotenv').config({path: `${__dirname}/.env`});
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = 5000;
 const booksRouter = require('./routes/books');
+const authorsRouter = require('./routes/authors');
 
 app.use(bodyParser.json());
 app.use(
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/books', booksRouter);
+
+app.use('/authors', authorsRouter)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
