@@ -1,12 +1,14 @@
 const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
+const authors = require('./authors');
 
 
 async function getBooks() {
   const rows = await db.query(
-    `SELECT bookName
-    FROM books`
+    `SELECT books.bookName, books.isbn, authors.firstName, authors.lastName
+     FROM books
+     INNER JOIN authors ON books.author = authors.author_id`
   );
   const data = helper.emptyOrRows(rows);
   console.log(data);
@@ -31,14 +33,19 @@ async function getBook(bookId) {
   }
 }
 
-async function addBook(bookName, isbn, authorId) {
+async function addBook(bookName, isbn, authorFirstName, authorLastName) {
+  const newAuthor = await authors.addAuthor(authorFirstName, authorLastName);
+  console.log(newAuthor.data.insertId);
   const rows = await db.query(
       `INSERT INTO books (bookName, isbn, author)
-      VALUES (?,?, ?)
+       VALUES (?,?, ?)
       `,
-      [bookName, isbn, authorId]
+      [bookName, isbn, newAuthor.data.insertId]
     );
-    const data = helper.emptyOrRows(rows);
+
+    let data = await getBooks();
+    data = data.data;
+    console.log(data);
 
     return {
       data

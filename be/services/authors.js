@@ -30,6 +30,7 @@ async function getAuthor(author_id) {
 }
 
 async function addAuthor(firstName, lastName) {
+  console.log(firstName, lastName);
     const rows = await db.query(
         `INSERT INTO authors (firstName, lastName)
         VALUES (?,?)

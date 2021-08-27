@@ -25,7 +25,8 @@ router.get('/:bookId', async function (req, res, next) {
 // Add book
 router.post('/', async function (req, res, next) {
   try {
-    res.json(await books.addBook(req.body.bookName, req.body.isbn, req.body.author));
+    console.log(req.body);
+    res.json(await books.addBook(req.body.bookName, req.body.isbn, req.body.authorFirstName, req.body.authorLastName));
   } catch (err) {
     console.error(`Error while adding book `, err.message);
     next(err);
